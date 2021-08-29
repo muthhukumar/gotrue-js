@@ -52,7 +52,7 @@ export default class GoTrueApi {
       }
       const data = await post(
         `${this.url}/signup${queryString}`,
-        { email, password, hcaptchaToken: options.hcaptchaToken },
+        { email, password, hcaptcha_token: options.hcaptchaToken },
         { headers }
       )
       let session = { ...data }
@@ -85,7 +85,7 @@ export default class GoTrueApi {
       }
       const data = await post(
         `${this.url}/token${queryString}`,
-        { email, password, hcaptchaToken: options.hcaptchaToken },
+        { email, password, hcaptcha_token: options.hcaptchaToken },
         { headers }
       )
       let session = { ...data }
@@ -112,7 +112,7 @@ export default class GoTrueApi {
       let headers = { ...this.headers }
       const data = await post(
         `${this.url}/signup`,
-        { phone, password, hcaptchaToken: options.hcaptchaToken },
+        { phone, password, hcaptcha_token: options.hcaptchaToken },
         { headers }
       )
       let session = { ...data }
@@ -140,7 +140,7 @@ export default class GoTrueApi {
       let queryString = '?grant_type=password'
       const data = await post(
         `${this.url}/token${queryString}`,
-        { phone, password, hcaptchaToken: options.hcaptchaToken },
+        { phone, password, hcaptcha_token: options.hcaptchaToken },
         { headers }
       )
       let session = { ...data }
@@ -171,7 +171,7 @@ export default class GoTrueApi {
       }
       const data = await post(
         `${this.url}/magiclink${queryString}`,
-        { email, hcaptchaToken: options.hcaptchaToken },
+        { email, hcaptcha_token: options.hcaptchaToken },
         { headers }
       )
       return { data, error: null }
@@ -194,7 +194,7 @@ export default class GoTrueApi {
       let headers = { ...this.headers }
       const data = await post(
         `${this.url}/otp`,
-        { phone, hcaptchaToken: options.hcaptchaToken },
+        { phone, hcaptcha_token: options.hcaptchaToken },
         { headers }
       )
       return { data, error: null }
@@ -273,7 +273,7 @@ export default class GoTrueApi {
       }
       const data = await post(
         `${this.url}/recover${queryString}`,
-        { email, hcaptchaToken: options.hcaptchaToken },
+        { email, hcaptcha_token: options.hcaptchaToken },
         { headers }
       )
       return { data, error: null }
