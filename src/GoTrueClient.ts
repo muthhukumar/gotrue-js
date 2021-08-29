@@ -99,6 +99,7 @@ export default class GoTrueClient {
     { email, password, phone }: UserCredentials,
     options: {
       redirectTo?: string
+      hcaptchaToken?: string
     } = {}
   ): Promise<{
     user: User | null
@@ -111,10 +112,13 @@ export default class GoTrueClient {
 
       const { data, error } =
         phone && password
-          ? await this.api.signUpWithPhone(phone!, password!)
+          ? await this.api.signUpWithPhone(phone!, password!, {
+            hcaptchaToken: options.hcaptchaToken,
+          })
           : await this.api.signUpWithEmail(email!, password!, {
-              redirectTo: options.redirectTo,
-            })
+            redirectTo: options.redirectTo,
+            hcaptchaToken: options.hcaptchaToken,
+          })
 
       if (error) {
         throw error
@@ -159,6 +163,7 @@ export default class GoTrueClient {
     options: {
       redirectTo?: string
       scopes?: string
+      hcaptchaToken?: string
     } = {}
   ): Promise<{
     session: Session | null
@@ -174,6 +179,7 @@ export default class GoTrueClient {
       if (email && !password) {
         const { error } = await this.api.sendMagicLinkEmail(email, {
           redirectTo: options.redirectTo,
+          hcaptchaToken: options.hcaptchaToken,
         })
         return { data: null, user: null, session: null, error }
       }
@@ -183,7 +189,9 @@ export default class GoTrueClient {
         })
       }
       if (phone && !password) {
-        const { error } = await this.api.sendMobileOTP(phone)
+        const { error } = await this.api.sendMobileOTP(phone, {
+          hcaptchaToken: options.hcaptchaToken,
+        })
         return { data: null, user: null, session: null, error }
       }
       if (phone && password) {
@@ -446,9 +454,10 @@ export default class GoTrueClient {
    * Receive a notification every time an auth event happens.
    * @returns {Subscription} A subscription object which can be used to unsubscribe itself.
    */
-  onAuthStateChange(
-    callback: (event: AuthChangeEvent, session: Session | null) => void
-  ): { data: Subscription | null; error: Error | null } {
+  onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void): {
+    data: Subscription | null
+    error: Error | null
+  } {
     try {
       const id: string = uuid()
       const self = this

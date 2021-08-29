@@ -41,6 +41,7 @@ export default class GoTrueApi {
     password: string,
     options: {
       redirectTo?: string
+      hcaptchaToken?: string
     } = {}
   ): Promise<{ data: Session | User | null; error: Error | null }> {
     try {
@@ -49,7 +50,11 @@ export default class GoTrueApi {
       if (options.redirectTo) {
         queryString = '?redirect_to=' + encodeURIComponent(options.redirectTo)
       }
-      const data = await post(`${this.url}/signup${queryString}`, { email, password }, { headers })
+      const data = await post(
+        `${this.url}/signup${queryString}`,
+        { email, password, hcaptchaToken: options.hcaptchaToken },
+        { headers }
+      )
       let session = { ...data }
       if (session.expires_in) session.expires_at = expiresAt(data.expires_in)
       return { data: session, error: null }
@@ -69,6 +74,7 @@ export default class GoTrueApi {
     password: string,
     options: {
       redirectTo?: string
+      hcaptchaToken?: string
     } = {}
   ): Promise<{ data: Session | null; error: Error | null }> {
     try {
@@ -77,7 +83,11 @@ export default class GoTrueApi {
       if (options.redirectTo) {
         queryString += '&redirect_to=' + encodeURIComponent(options.redirectTo)
       }
-      const data = await post(`${this.url}/token${queryString}`, { email, password }, { headers })
+      const data = await post(
+        `${this.url}/token${queryString}`,
+        { email, password, hcaptchaToken: options.hcaptchaToken },
+        { headers }
+      )
       let session = { ...data }
       if (session.expires_in) session.expires_at = expiresAt(data.expires_in)
       return { data: session, error: null }
@@ -93,11 +103,18 @@ export default class GoTrueApi {
    */
   async signUpWithPhone(
     phone: string,
-    password: string
+    password: string,
+    options: {
+      hcaptchaToken?: string
+    } = {}
   ): Promise<{ data: Session | User | null; error: Error | null }> {
     try {
       let headers = { ...this.headers }
-      const data = await post(`${this.url}/signup`, { phone, password }, { headers })
+      const data = await post(
+        `${this.url}/signup`,
+        { phone, password, hcaptchaToken: options.hcaptchaToken },
+        { headers }
+      )
       let session = { ...data }
       if (session.expires_in) session.expires_at = expiresAt(data.expires_in)
       return { data: session, error: null }
@@ -113,12 +130,19 @@ export default class GoTrueApi {
    */
   async signInWithPhone(
     phone: string,
-    password: string
+    password: string,
+    options: {
+      hcaptchaToken?: string
+    } = {}
   ): Promise<{ data: Session | null; error: Error | null }> {
     try {
       let headers = { ...this.headers }
       let queryString = '?grant_type=password'
-      const data = await post(`${this.url}/token${queryString}`, { phone, password }, { headers })
+      const data = await post(
+        `${this.url}/token${queryString}`,
+        { phone, password, hcaptchaToken: options.hcaptchaToken },
+        { headers }
+      )
       let session = { ...data }
       if (session.expires_in) session.expires_at = expiresAt(data.expires_in)
       return { data: session, error: null }
@@ -136,6 +160,7 @@ export default class GoTrueApi {
     email: string,
     options: {
       redirectTo?: string
+      hcaptchaToken?: string
     } = {}
   ): Promise<{ data: {} | null; error: Error | null }> {
     try {
@@ -144,7 +169,11 @@ export default class GoTrueApi {
       if (options.redirectTo) {
         queryString += '?redirect_to=' + encodeURIComponent(options.redirectTo)
       }
-      const data = await post(`${this.url}/magiclink${queryString}`, { email }, { headers })
+      const data = await post(
+        `${this.url}/magiclink${queryString}`,
+        { email, hcaptchaToken: options.hcaptchaToken },
+        { headers }
+      )
       return { data, error: null }
     } catch (error) {
       return { data: null, error }
@@ -155,10 +184,19 @@ export default class GoTrueApi {
    * Sends a mobile OTP via SMS. Will register the account if it doesn't already exist
    * @param phone The user's phone number WITH international prefix
    */
-  async sendMobileOTP(phone: string): Promise<{ data: {} | null; error: Error | null }> {
+  async sendMobileOTP(
+    phone: string,
+    options: {
+      hcaptchaToken?: string
+    } = {}
+  ): Promise<{ data: {} | null; error: Error | null }> {
     try {
       let headers = { ...this.headers }
-      const data = await post(`${this.url}/otp`, { phone }, { headers })
+      const data = await post(
+        `${this.url}/otp`,
+        { phone, hcaptchaToken: options.hcaptchaToken },
+        { headers }
+      )
       return { data, error: null }
     } catch (error) {
       return { data: null, error }
@@ -224,6 +262,7 @@ export default class GoTrueApi {
     email: string,
     options: {
       redirectTo?: string
+      hcaptchaToken?: string
     } = {}
   ): Promise<{ data: {} | null; error: Error | null }> {
     try {
@@ -232,7 +271,11 @@ export default class GoTrueApi {
       if (options.redirectTo) {
         queryString += '?redirect_to=' + encodeURIComponent(options.redirectTo)
       }
-      const data = await post(`${this.url}/recover${queryString}`, { email }, { headers })
+      const data = await post(
+        `${this.url}/recover${queryString}`,
+        { email, hcaptchaToken: options.hcaptchaToken },
+        { headers }
+      )
       return { data, error: null }
     } catch (error) {
       return { data: null, error }
