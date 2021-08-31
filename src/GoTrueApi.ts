@@ -32,6 +32,7 @@ export default class GoTrueApi {
    * @param email The email address of the user.
    * @param password The password of the user.
    * @param redirectTo A URL or mobile address to send the user to after they are confirmed.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    *
    * @returns A logged-in session if the server has "autoconfirm" ON
    * @returns A user if the server has "autoconfirm" OFF
@@ -68,6 +69,7 @@ export default class GoTrueApi {
    * @param email The email address of the user.
    * @param password The password of the user.
    * @param redirectTo A URL or mobile address to send the user to after they are confirmed.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    */
   async signInWithEmail(
     email: string,
@@ -100,6 +102,7 @@ export default class GoTrueApi {
    * Signs up a new user using their phone number and a password.
    * @param phone The phone number of the user.
    * @param password The password of the user.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    */
   async signUpWithPhone(
     phone: string,
@@ -127,6 +130,7 @@ export default class GoTrueApi {
    * Logs in an existing user using their phone number and password.
    * @param phone The phone number of the user.
    * @param password The password of the user.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    */
   async signInWithPhone(
     phone: string,
@@ -155,6 +159,7 @@ export default class GoTrueApi {
    * Sends a magic login link to an email address.
    * @param email The email address of the user.
    * @param redirectTo A URL or mobile address to send the user to after they are confirmed.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    */
   async sendMagicLinkEmail(
     email: string,
@@ -183,6 +188,7 @@ export default class GoTrueApi {
   /**
    * Sends a mobile OTP via SMS. Will register the account if it doesn't already exist
    * @param phone The user's phone number WITH international prefix
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    */
   async sendMobileOTP(
     phone: string,
@@ -257,6 +263,7 @@ export default class GoTrueApi {
    * Sends a reset request to an email address.
    * @param email The email address of the user.
    * @param redirectTo A URL or mobile address to send the user to after they are confirmed.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    */
   async resetPasswordForEmail(
     email: string,

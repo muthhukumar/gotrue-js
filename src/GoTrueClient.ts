@@ -94,6 +94,7 @@ export default class GoTrueClient {
    * @param password The user's password.
    * @param phone The user's phone number.
    * @param redirectTo A URL or mobile address to send the user to after they are confirmed.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    */
   async signUp(
     { email, password, phone }: UserCredentials,
@@ -113,12 +114,12 @@ export default class GoTrueClient {
       const { data, error } =
         phone && password
           ? await this.api.signUpWithPhone(phone!, password!, {
-            hcaptchaToken: options.hcaptchaToken,
-          })
+              hcaptchaToken: options.hcaptchaToken,
+            })
           : await this.api.signUpWithEmail(email!, password!, {
-            redirectTo: options.redirectTo,
-            hcaptchaToken: options.hcaptchaToken,
-          })
+              redirectTo: options.redirectTo,
+              hcaptchaToken: options.hcaptchaToken,
+            })
 
       if (error) {
         throw error
@@ -156,6 +157,7 @@ export default class GoTrueClient {
    * @param refreshToken A valid refresh token that was returned on login.
    * @param provider One of the providers supported by GoTrue.
    * @param redirectTo A URL or mobile address to send the user to after they are confirmed.
+   * @param hcaptchaToken The response provided by hcaptcha after the challenge is verified.
    * @param scopes A space-separated list of scopes granted to the OAuth application.
    */
   async signIn(
@@ -454,7 +456,9 @@ export default class GoTrueClient {
    * Receive a notification every time an auth event happens.
    * @returns {Subscription} A subscription object which can be used to unsubscribe itself.
    */
-  onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void): {
+  onAuthStateChange(
+    callback: (event: AuthChangeEvent, session: Session | null) => void
+  ): {
     data: Subscription | null
     error: Error | null
   } {
